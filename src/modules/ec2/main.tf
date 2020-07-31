@@ -13,6 +13,9 @@ resource "aws_instance" "ec2" {
   tags = {
     Name = var.ec2_name
   }
+
+  user_data = file("~/Documents/terraform/terraform-aws-free-tier/src/modules/ec2/installation_script.sh")
+
 }
 
 resource "aws_security_group" "ec2_security_group" {
@@ -31,6 +34,20 @@ resource "aws_security_group" "ec2_security_group" {
   ingress {
     from_port   = 80
     to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port   = 3000
+    to_port     = 3000
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port   = 9090
+    to_port     = 9090
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
